@@ -1,14 +1,19 @@
+/* eslint-disable quotes */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable camelcase */
 /* eslint-disable class-methods-use-this */
+// eslint-disable-next-line no-unused-vars
 import { Response, Request } from 'express';
 
-import convertHourToMinutes from "../utils/convertHourToMinutes";
-import db from "../db/connection";
+// eslint-disable-next-line import/extensions
+import convertHourToMinutes from '../utils/convertHourToMinutes';
+import db from '../db/connection';
 
 interface ScheduleItem {
-  week_day: number,
-  from: string,
-  to: string,
+  week_day: number;
+  from: string;
+  to: string;
 }
 
 export default class WorksController {
@@ -28,7 +33,7 @@ export default class WorksController {
     const timeInMinutes = convertHourToMinutes(time);
 
     const works = await db('works')
-      .whereExists(function () {
+      .whereExists(function() {
         this.select('work_schedule.*')
           .from('work_schedule')
           .whereRaw('`work_schedule`.`work_id`')
@@ -37,7 +42,12 @@ export default class WorksController {
           .whereRaw('`work_schedule`.`to` > ??', [timeInMinutes]);
       })
       .where('works.type_service', '=', type_service)
-      .join('informal_workers', 'works.informal_workers_id', '=', 'informal_workers.id')
+      .join(
+        'informal_workers',
+        'works.informal_workers_id',
+        '=',
+        'informal_workers.id',
+      )
       .select(['works.*', 'informal_workers.*']);
 
     return res.json(works);
@@ -55,7 +65,7 @@ export default class WorksController {
       schedule,
     } = req.body;
 
-    console.log(name, schedule, cost, bio)
+    console.log(name, schedule, cost, bio);
 
     const trx = await db.transaction();
 
@@ -91,7 +101,72 @@ export default class WorksController {
     } catch (err) {
       await trx.rollback();
 
-      return res.status(400).json({ error: 'Unexpected error while creating new work.' });
+      return res
+        .status(400)
+        .json({ error: 'Unexpected error while creating new work.' });
     }
   }
+
+  async delete(req: Request, res: Response) {
+    const { id }  = req.params;
+
+    const find =  await db('works').where('id', id)
+
+    if(find.length > 0) {
+      try{
+        const deleted = await db('works').where('id', id).delete();
+        res.status(200).json({
+          deleted,
+          message: 'Delete has successful',
+        })
+      }
+      catch(error) {
+        res.status(405).json({ error, message: 'Error: Not delete'})
+      }
+      
+    } else res.status(404).json({ error, message: 'Error: Not found'})
+    
+  }
+  
+  async update(req: Request, res: Response) {
+    const { id }  = req.params;
+    const { name, whatsapp, address, bio, type_service, schedule, avatar } = req.body
+
+    const find: any = await db('works')
+    .whereExists(function() {
+      this.select('work_schedule.*')
+        .from('work_schedule')
+        .whereRaw('`work_schedule`.`work_id`')
+    })
+    .where('works.type_service', '=', type_service)
+    .join(
+      'informal_workers',
+      'works.informal_workers_id',
+      '=',
+      'informal_workers.id',
+    )
+    .select(['works.*', 'informal_workers.*']);
+
+    console.log(find)
+
+    if(find.length > 0) {
+     
+      try{
+       const { cost, type_service } = find
+       const updated = await db('informal_workers')
+        .where('id', id)
+        .update({ name, whatsapp, address, cost, bio, type_service, schedule, avatar } )
+       
+         if(updated) res.status(200).json({ message: `Rows has updated ${updated}`, name, whatsapp, address, cost, bio, type_service, schedule, avatar } ) 
+          else res.status(404).json({message: "Record not found"})
+        
+      }
+      catch(error) {
+        res.status(405).json({ error, message: 'Error: Not update'})
+      }   
+    } else {
+      res.status(404).json({ error: 'Error: Not found'})
+    }
+  }
+    
 }

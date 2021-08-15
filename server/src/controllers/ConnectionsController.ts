@@ -1,10 +1,12 @@
-/* eslint-disable camelcase */
-/* eslint-disable class-methods-use-this */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+// eslint-disable-next-line no-unused-vars
 import { Request, Response } from 'express';
 import db from '../db/connection';
 
 export default class ConnectionsController {
-  async index(req: Request, res: Response) {
+  // eslint-disable-next-line class-methods-use-this
+  async index(_req: Request, res: Response) {
     const totalConnections = await db('connections').count('* as total');
 
     const { total } = totalConnections[0];
@@ -12,7 +14,9 @@ export default class ConnectionsController {
     return res.json({ total });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async create(req: Request, res: Response) {
+    // eslint-disable-next-line camelcase
     const { user_id } = req.body;
 
     await db('connections').insert({

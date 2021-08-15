@@ -9,6 +9,8 @@ const connectionsControllers = new ConnectionsController();
 
 routes.get('/works', worksControllers.index);
 routes.post('/works', worksControllers.create);
+routes.delete('/works/:id', worksControllers.delete)
+routes.put('/works/:id', worksControllers.update)
 
 routes.get('/connections', connectionsControllers.index);
 routes.post('/connections', connectionsControllers.create);
