@@ -17,10 +17,10 @@ export default class ConnectionsController {
   // eslint-disable-next-line class-methods-use-this
   async create(req: Request, res: Response) {
     // eslint-disable-next-line camelcase
-    const { user_id } = req.body;
+    const { informal_workers_id } = req.body;
 
     await db('connections').insert({
-      user_id,
+      informal_workers_id,
     });
 
     return res.status(201).send();

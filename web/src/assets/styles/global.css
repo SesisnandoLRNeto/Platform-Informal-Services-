@@ -1,63 +1,63 @@
 :root {
-  --color-background: #A8D0DB;
-  --color-primary-lighter: #9871f5;
-  --color-primary-light: #735290;
-  --color-primary: #8257e5;
-  --color-primary-dark: #774dd6;
-  --color-primary-darker: #363457;
-  --color-secundary: #20A4F3;
-  --color-secundary-dark: #467599;
-  --color-title-in-primary: #ffffff;
-  --color-text-in-primary: #d4c2ff;
-  --color-text-title: #32264d;
-  --color-text-complement: #7c7985;
-  --color-text-base: #465C69;
-  --color-line-in-white: #e6e6f0;
-  --color-input-background: #f8f8fc;
-  --color-button-text: #ffffff;
-  --color-box-base: #ffffff;
-  --color-box-footer: #fafafc;
+	--color-background: #c3e8bd;
+	--color-primary-lighter: #44a75d;
+	--color-primary-light: #5b7553;
+	--color-primary: #8eb897;
+	--color-primary-dark: #5b7553;
+	--color-primary-darker: #ffffff;
+	--color-secundary: #20a4f3;
+	--color-secundary-dark: #467599;
+	--color-title-in-primary: #ffffff;
+	--color-text-in-primary: #ffffff;
+	--color-text-title: #ffffff;
+	--color-text-complement: #7c7985;
+	--color-text-base: #465c69;
+	--color-line-in-white: #e6e6f0;
+	--color-input-background: #f8f8fc;
+	--color-button-text: #ffffff;
+	--color-box-base: #ffffff;
+	--color-box-footer: #fafafc;
 
-  font-size: 60%;
+	font-size: 60%;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 hmtl,
 body,
 #root {
-  height: 100vh;
+	height: 100vh;
 }
 
 body {
-  background: var(--color-background);
+	background: var(--color-background);
 }
 
 #root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 body,
 input,
 button,
 textarea {
-  font: 500 1.6rem Poppins;
-  color: var(--color-text-base);
+	font: 500 1.6rem Poppins;
+	color: var(--color-text-base);
 }
 
 .container {
-  width: 90vw;
-  max-width: 700px;
+	width: 90vw;
+	max-width: 700px;
 }
 
 @media (min-width: 700px) {
-  :root {
-    font-size: 62.5%;
-  }
+	:root {
+		font-size: 62.5%;
+	}
 }
